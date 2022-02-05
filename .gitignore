@@ -1,3 +1,20 @@
+# IntelliJ
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+
+# vim
+*.swp
+
+# OS X
+.DS_Store
+
+# Git
+.gitattributes
+
 # Compiled class file
 *.class
 
@@ -23,7 +40,11 @@
 hs_err_pid*
 
 # Ignore Gradle project-specific cache directory
-.gradle
+bin/
+build/
+.gradle/
+.gradletasknamecache
+gradle-app.setting
+!gradle-wrapper.jar
+gradle-cache/
 
-# Ignore Gradle build output directory
-build
