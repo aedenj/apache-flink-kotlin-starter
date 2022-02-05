@@ -38,6 +38,12 @@ dependencies {
         "org.apache.flink:flink-streaming-java_$scalaVersion:$flinkVersion",
         "org.apache.flink:flink-runtime-web_$scalaVersion:$flinkVersion"
     ).forEach { implementation(it) }
+
+    // Testing
+    listOf(
+        "org.jetbrains.kotlin:kotlin-test",
+        "org.jetbrains.kotlin:kotlin-test-junit"
+    ).forEach { testImplementation(it) }
 }
 
 application {
