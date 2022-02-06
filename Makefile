@@ -4,6 +4,9 @@ default:
 	docker -v
 	java -version
 
+run:
+	./gradlew shadowjar run
+
 kafka-start:
 	docker-compose -p kafka -f docker/kafka-cluster.yml up
 
