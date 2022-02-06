@@ -23,6 +23,19 @@ application {
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+
+        testLogging {
+            events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            showExceptions = true
+            showCauses = true
+            showStackTraces = true
+            showStandardStreams = true
+        }
+    }
+
     withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
@@ -70,6 +83,8 @@ dependencies {
     val scalaVersion = "2.11"
     val log4jVersion = "2.17.0"
     val slf4jVersion = "1.7.32"
+    val junitVersion = "5.8.2"
+    val assertjVersion = "3.20.2"
 
     // Basics
     listOf(
@@ -92,8 +107,9 @@ dependencies {
     ).forEach { implementation(it) }
 
     // Testing
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     listOf(
-        "org.jetbrains.kotlin:kotlin-test",
-        "org.jetbrains.kotlin:kotlin-test-junit"
+        "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
+        "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
 }

@@ -3,11 +3,17 @@
  */
 package apache.flink.kotlin.starter
 
-import kotlin.test.Test
-import kotlin.test.assertNotNull
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class AppTest {
-    @Test fun appHasAGreeting() {
-        assertNotNull("hello world", "app should have a greeting")
+    @Test
+    fun TheAnswerToLife() {
+        assertThat(42).isEqualTo(Integer.sum(19, 23))
+    }
+
+    @Test
+    fun AlwaysRight() {
+        assertThat(true).isEqualTo(true)
     }
 }
