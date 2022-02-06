@@ -115,6 +115,11 @@ dependencies {
         "org.apache.flink:flink-runtime-web_$scalaVersion:$flinkVersion"
     ).forEach { implementation(it) }
 
+    // Connectors & Formats
+    listOf(
+        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion"
+    ).forEach { implementation(it) }
+
     // Logging
     listOf(
         "org.apache.logging.log4j:log4j-api:$log4jVersion",
@@ -129,5 +134,10 @@ dependencies {
         "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
         "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
+
+    // Add to shadowjar
+    listOf(
+        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion"
+    ).forEach { flinkShadowJar(it) }
 }
 
