@@ -24,6 +24,10 @@ val entryPoint = "apache.flink.kotlin.starter.FlinkApp"
 application {
     mainClass.set(entryPoint)
     version = "1.0"
+    applicationDefaultJvmArgs = listOf(
+        "-Dlog4j2.configurationFile=conf/flink/log4j-local.properties"
+        ,"-Dlog.file=./data/flink/logs" // log path for the flink webui when running dockerless
+    )
 }
 
 tasks {
@@ -43,7 +47,8 @@ tasks {
         }
     }
 
-    jar {
+    shadowJar {
+        archiveFileName.set("${project.parent?.name}-${project.name}-${project.version}.jar")
         manifest.attributes.apply {
             putAll(mapOf(
                 "Main-Class" to entryPoint,
@@ -54,15 +59,11 @@ tasks {
                 "Built-by" to System.getProperty("user.name")
             ))
         }
-    }
-
-    shadowJar {
-        archiveBaseName.set("${project.parent?.name}-${project.name}")
         configurations.clear()
         configurations.add(flinkShadowJar)
-        isZip64 = true
         mergeServiceFiles()
         minimize()
+        isZip64 = true
     }
 
     assemble {
