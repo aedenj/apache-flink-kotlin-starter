@@ -20,14 +20,19 @@ kotlin {
     }
 }
 
-val jarName = "flink-streaming-job.jar"
+val jarNamePrefix = "flink-streaming-job"
 val entryPoint = "apache.flink.kotlin.starter.FlinkApp"
 
 application {
     mainClass.set(entryPoint)
+    version = "1.0"
 }
 
 tasks {
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
     test {
         useJUnitPlatform()
 
@@ -40,21 +45,23 @@ tasks {
         }
     }
 
-    withType<JavaCompile> {
-        options.encoding = "UTF-8"
-    }
-
-    named<ShadowJar>("shadowJar") {
-        archiveFileName.set(jarName)
-        configurations.clear()
-        configurations.add(flinkShadowJar)
+    jar {
         manifest.attributes.apply {
             putAll(mapOf(
                 "Main-Class" to entryPoint,
-                "Built-by" to System.getProperty("user.name"),
-                "Build-Jdk" to System.getProperty("java.version")
+                "Project-Name" to rootProject.name,
+                "Build-OsName" to System.getProperty("os.name"),
+                "Build-OsVersion" to System.getProperty("os.version"),
+                "Build-Jdk" to System.getProperty("java.version"),
+                "Built-by" to System.getProperty("user.name")
             ))
         }
+    }
+
+    shadowJar {
+        archiveBaseName.set(jarNamePrefix)
+        configurations.clear()
+        configurations.add(flinkShadowJar)
         isZip64 = true
         mergeServiceFiles()
         minimize()
@@ -69,8 +76,6 @@ val flinkShadowJar: Configuration by configurations.creating {
     // always exclude these (also from transitive dependencies) since they are provided by Flink
     exclude(group = "org.apache.flink", module = "force-shading")
     exclude(group = "com.google.code.findbugs", module = "jsr305")
-    exclude(group = "org.slf4j")
-    exclude(group = "org.apache.logging.log4j")
 }
 
 configurations {
