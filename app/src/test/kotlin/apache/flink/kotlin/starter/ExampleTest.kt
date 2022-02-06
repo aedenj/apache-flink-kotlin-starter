@@ -4,15 +4,19 @@
 package apache.flink.kotlin.starter
 
 import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-class AppTest {
+@DisplayName("Example Tests")
+class ExampleTest {
     @Test
+    @DisplayName("the answer to all of life")
     fun TheAnswerToLife() {
         assertThat(42).isEqualTo(Integer.sum(19, 23))
     }
 
     @Test
+    @DisplayName("always right")
     fun AlwaysRight() {
         assertThat(true).isEqualTo(true)
     }

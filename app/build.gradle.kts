@@ -1,11 +1,16 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.adarshr.gradle.testlogger.theme.ThemeType
 
 plugins {
     kotlin("jvm")
 
+    // https://imperceptiblethoughts.com/shadow/introduction/
     id("com.github.johnrengelman.shadow") version "7.1.2"
 
-    // Apply the application plugin to add support for building a CLI application in Java.
+    // https://plugins.gradle.org/plugin/com.adarshr.test-logger
+    id("com.adarshr.test-logger") version "3.0.0"
+
+    // https://docs.gradle.org/current/userguide/application_plugin.html
     application
 }
 
@@ -26,13 +31,12 @@ tasks {
     test {
         useJUnitPlatform()
 
-        testLogging {
-            events("passed", "skipped", "failed")
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-            showExceptions = true
-            showCauses = true
-            showStackTraces = true
+        testlogger {
+            theme = ThemeType.MOCHA
+            slowThreshold = 5000
             showStandardStreams = true
+            showFullStackTraces = false
+            logLevel = LogLevel.QUIET
         }
     }
 
