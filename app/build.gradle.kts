@@ -1,31 +1,75 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    idea
+    kotlin("jvm")
 
-    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
 
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+val jarName = "flink-streaming-job.jar"
+val entryPoint = "apache.flink.kotlin.starter.FlinkApp"
+
+application {
+    mainClass.set(entryPoint)
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
+tasks {
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    named<ShadowJar>("shadowJar") {
+        archiveFileName.set(jarName)
+        configurations.clear()
+        configurations.add(flinkShadowJar)
+        manifest.attributes.apply {
+            putAll(mapOf(
+                "Main-Class" to entryPoint,
+                "Built-by" to System.getProperty("user.name"),
+                "Build-Jdk" to System.getProperty("java.version")
+            ))
+        }
+        isZip64 = true
+        mergeServiceFiles()
+        minimize()
+    }
+}
+
+// NOTE: We cannot use "compileOnly" or "shadow" configurations since then we could not run code
+// in the IDE or with "gradle run". We also cannot exclude transitive dependencies from the
+// shadowJar yet (see https://github.com/johnrengelman/shadow/issues/159).
+// -> Explicitly define the // libraries we want to be included in the "flinkShadowJar" configuration!
+val flinkShadowJar: Configuration by configurations.creating {
+    // always exclude these (also from transitive dependencies) since they are provided by Flink
+    exclude(group = "org.apache.flink", module = "force-shading")
+    exclude(group = "com.google.code.findbugs", module = "jsr305")
+    exclude(group = "org.slf4j")
+    exclude(group = "org.apache.logging.log4j")
+}
+
+configurations {
+    all {
+        // https://logging.apache.org/log4j/2.x/faq.html#exclusions
+        // Good Explanation: https://stackoverflow.com/questions/42348755/class-path-contains-multiple-slf4j-bindings-error
+        exclude(group = "log4j", module = "log4j")
+        exclude(group = "org.slf4j", module = "slf4j-log4j12")
+    }
 }
 
 dependencies {
     val flinkVersion = "1.14.3"
     val scalaVersion = "2.11"
+    val log4jVersion = "2.17.0"
+    val slf4jVersion = "1.7.32"
 
     // Basics
     listOf(
@@ -39,13 +83,17 @@ dependencies {
         "org.apache.flink:flink-runtime-web_$scalaVersion:$flinkVersion"
     ).forEach { implementation(it) }
 
+    // Logging
+    listOf(
+        "org.apache.logging.log4j:log4j-api:$log4jVersion",
+        "org.apache.logging.log4j:log4j-core:$log4jVersion",
+        "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion",
+        "org.slf4j:slf4j-log4j12:$slf4jVersion"
+    ).forEach { implementation(it) }
+
     // Testing
     listOf(
         "org.jetbrains.kotlin:kotlin-test",
         "org.jetbrains.kotlin:kotlin-test-junit"
     ).forEach { testImplementation(it) }
-}
-
-application {
-    mainClass.set("apache.flink.kotlin.starter.FlinkApp")
 }
