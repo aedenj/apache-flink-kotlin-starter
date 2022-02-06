@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.adarshr.gradle.testlogger.theme.ThemeType
 
 plugins {
@@ -20,7 +19,6 @@ kotlin {
     }
 }
 
-val jarNamePrefix = "flink-streaming-job"
 val entryPoint = "apache.flink.kotlin.starter.FlinkApp"
 
 application {
@@ -59,12 +57,21 @@ tasks {
     }
 
     shadowJar {
-        archiveBaseName.set(jarNamePrefix)
+        archiveBaseName.set("${project.parent?.name}-${project.name}")
         configurations.clear()
         configurations.add(flinkShadowJar)
         isZip64 = true
         mergeServiceFiles()
         minimize()
+    }
+
+    assemble {
+        dependsOn(shadowJar)
+    }
+
+
+    javadoc {
+        classpath += flinkShadowJar
     }
 }
 
@@ -122,3 +129,4 @@ dependencies {
         "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
 }
+

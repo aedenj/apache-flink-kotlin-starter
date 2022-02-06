@@ -14,3 +14,5 @@ heartbeat.interval: 1000
 heartbeat.timeout: 5000
 
 parallelism.default: 2
+rest.flamegraph.enabled: true
+web.backpressure.refresh-interval: 10000
