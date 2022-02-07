@@ -70,9 +70,16 @@ tasks {
         dependsOn(shadowJar)
     }
 
-
     javadoc {
         classpath += flinkShadowJar
+    }
+
+    named<JavaExec>("run") {
+        environment("FLINK_ENV", "local")
+    }
+
+    sourceSets {
+
     }
 }
 
@@ -128,6 +135,9 @@ dependencies {
         "org.slf4j:slf4j-log4j12:$slf4jVersion"
     ).forEach { implementation(it) }
 
+    // Supplementary
+    implementation("com.typesafe:config:1.4.2")
+
     // Testing
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     listOf(
@@ -137,7 +147,8 @@ dependencies {
 
     // Add to shadowjar
     listOf(
-        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion"
+        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
+        "com.typesafe:config:1.4.2"
     ).forEach { flinkShadowJar(it) }
 }
 

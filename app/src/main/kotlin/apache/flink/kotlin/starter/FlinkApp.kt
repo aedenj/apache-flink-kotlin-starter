@@ -15,9 +15,10 @@ fun main() {
 
     val source = KafkaSource
         .builder<String>()
-        .setBootstrapServers("localhost:9092")
+        .setBootstrapServers(JobConfig.brokers())
         .setTopics("source")
         .setValueOnlyDeserializer(SimpleStringSchema())
+        .setProperties(JobConfig.consumer())
         .build()
 
     val sink = KafkaSink
@@ -30,6 +31,7 @@ fun main() {
                 .build()
         )
         .setDeliverGuarantee(DeliveryGuarantee.NONE)
+        .setKafkaProducerConfig(JobConfig.producer())
         .build();
 
     env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
