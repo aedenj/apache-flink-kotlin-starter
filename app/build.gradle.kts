@@ -64,6 +64,10 @@ tasks {
         mergeServiceFiles()
         minimize()
     }
+
+    named<JavaExec>("run") {
+        environment("FLINK_ENV", "local")
+    }
 }
 
 // NOTE: We cannot use "compileOnly" or "shadow" configurations since then we could not run code
@@ -121,7 +125,7 @@ dependencies {
         "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
 
-    // Add to shadowjar
+    //Add required dependencies to the Flink shadow jar
     listOf(
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
         "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
