@@ -47,8 +47,7 @@ tasks {
         }
     }
 
-    shadowJar {
-        archiveFileName.set("${project.parent?.name}-${project.name}-${project.version}.jar")
+    jar {
         manifest.attributes.apply {
             putAll(mapOf(
                 "Main-Class" to entryPoint,
@@ -59,6 +58,10 @@ tasks {
                 "Built-by" to System.getProperty("user.name")
             ))
         }
+    }
+
+    shadowJar {
+        archiveFileName.set("${project.parent?.name}-${project.name}-${project.version}.jar")
         configurations.clear()
         configurations.add(flinkShadowJar)
         mergeServiceFiles()
