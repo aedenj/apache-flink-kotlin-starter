@@ -63,23 +63,10 @@ tasks {
         configurations.add(flinkShadowJar)
         mergeServiceFiles()
         minimize()
-        isZip64 = true
-    }
-
-    assemble {
-        dependsOn(shadowJar)
-    }
-
-    javadoc {
-        classpath += flinkShadowJar
     }
 
     named<JavaExec>("run") {
         environment("FLINK_ENV", "local")
-    }
-
-    sourceSets {
-
     }
 }
 
@@ -91,15 +78,8 @@ val flinkShadowJar: Configuration by configurations.creating {
     // always exclude these (also from transitive dependencies) since they are provided by Flink
     exclude(group = "org.apache.flink", module = "force-shading")
     exclude(group = "com.google.code.findbugs", module = "jsr305")
-}
-
-configurations {
-    all {
-        // https://logging.apache.org/log4j/2.x/faq.html#exclusions
-        // Good Explanation: https://stackoverflow.com/questions/42348755/class-path-contains-multiple-slf4j-bindings-error
-        exclude(group = "log4j", module = "log4j")
-        exclude(group = "org.slf4j", module = "slf4j-log4j12")
-    }
+    exclude(group = "org.slf4j")
+    exclude(group = "org.apache.logging.log4j")
 }
 
 dependencies {
@@ -147,6 +127,7 @@ dependencies {
 
     // Add to shadowjar
     listOf(
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
         "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
         "com.typesafe:config:1.4.2"
     ).forEach { flinkShadowJar(it) }

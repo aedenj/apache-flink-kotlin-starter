@@ -23,7 +23,7 @@ fun main() {
 
     val sink = KafkaSink
         .builder<String>()
-        .setBootstrapServers("localhost:9092")
+        .setBootstrapServers(JobConfig.brokers())
         .setRecordSerializer(
             KafkaRecordSerializationSchema.builder<String>()
                 .setTopic("destination")
