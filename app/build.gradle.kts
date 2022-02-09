@@ -64,10 +64,6 @@ tasks {
         mergeServiceFiles()
         minimize()
     }
-
-    named<JavaExec>("run") {
-        environment("FLINK_ENV", "local")
-    }
 }
 
 // NOTE: We cannot use "compileOnly" or "shadow" configurations since then we could not run code

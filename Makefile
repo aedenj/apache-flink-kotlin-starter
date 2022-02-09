@@ -5,7 +5,7 @@ default:
 	java -version
 
 run:
-	./gradlew run
+	FLINK_ENV="local" ./gradlew run
 
 clean:
 	./gradlew clean
