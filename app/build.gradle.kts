@@ -147,4 +147,3 @@ dependencies {
         "com.typesafe:config:1.4.2"
     ).forEach { flinkShadowJar(it) }
 }
-

@@ -17,46 +17,38 @@ import org.junit.jupiter.api.extension.ExtendWith
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
 import uk.org.webcompere.systemstubs.jupiter.SystemStub
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension
-import java.util.concurrent.CompletableFuture
-import kotlin.Exception
+import org.apache.flink.core.execution.JobClient
 
-@DisplayName("Example Test")
+
 @ExtendWith(SystemStubsExtension::class)
+@DisplayName("Example Test")
 class ExampleTest {
     @SystemStub
     private lateinit var environment: EnvironmentVariables
     private val kafka:EmbeddedKafkaCluster = provisionWith(newClusterConfig().configure(
         brokers().with(`KafkaConfig$`.`MODULE$`.ListenersProp(), "PLAINTEXT://localhost:65438"))
     )
-    private lateinit var job:CompletableFuture<Void>
+    private lateinit var job:JobClient
 
     init {
         kafka.start()
-        kafka.createTopic(TopicConfig.withName("source"))
-        kafka.createTopic(TopicConfig.withName("destination"))
+        kafka.send(to("source","a", "b", "c"))
     }
 
     @BeforeAll
     fun setup() {
-        job = CompletableFuture.runAsync {
-            try {
-                environment.set("FLINK_ENV", "test")
-                main()
-            } catch (e:Exception) {
-                e.printStackTrace()
-            }
-        }
+        environment.set("FLINK_ENV", "test")
+        job = main().executeAsync()
     }
 
     @AfterAll
     fun tearDown() {
-        job.cancel(true)
+        job.cancel()
         kafka.stop()
     }
 
     @Test
-    fun `three messages are be consumed and produced`() {
-        kafka.send(to("source","a", "b", "c"))
+    fun `three messages are consumed and produced`() {
         kafka.observe(on("destination", 3))
     }
 }

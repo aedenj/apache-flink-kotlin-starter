@@ -10,7 +10,7 @@ import org.apache.flink.connector.kafka.sink.KafkaSink
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
 import org.apache.flink.connector.kafka.source.KafkaSource
 
-fun main() {
+fun main(): StreamExecutionEnvironment {
     val env = StreamExecutionEnvironment.getExecutionEnvironment()
     val config = JobConfig.getInstance(System.getenv("FLINK_ENV"))
 
@@ -39,5 +39,5 @@ fun main() {
         .sinkTo(sink)
         .name("Destination Topic")
 
-    env.execute("Kotlin Flink Starter")
+     return env
 }
