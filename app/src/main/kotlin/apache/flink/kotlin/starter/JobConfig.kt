@@ -5,15 +5,21 @@ import java.util.Properties
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 
-object JobConfig
+class JobConfig private constructor(env: String)
 {
+    companion object {
+        @Volatile
+        private var INSTANCE: JobConfig? = null
+
+        @Synchronized
+        fun getInstance(env: String): JobConfig = INSTANCE ?: JobConfig(env).also { INSTANCE = it }
+    }
+
     private val config:Config
 
     init {
         val appConfig = ConfigFactory.load()
-        val envConfig = ConfigFactory.load(
-            "application." + System.getenv("FLINK_ENV") + ".conf"
-        )
+        val envConfig = ConfigFactory.load("application.$env.conf")
         config = appConfig.withFallback(envConfig)
         config.checkValid(ConfigFactory.defaultReference())
     }
@@ -24,12 +30,14 @@ object JobConfig
 
     fun consumer(): Properties? {
         val props = Properties()
+
         props.setProperty("group.id", config.getString("kafka.consumer.groupId"))
         return props
     }
 
     fun producer(): Properties? {
         val props = Properties()
+
         props.setProperty("transaction.timeout.ms",  config.getString("kafka.producer.transTimeout"))
         return props
     }

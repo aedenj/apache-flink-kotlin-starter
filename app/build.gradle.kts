@@ -62,6 +62,7 @@ tasks {
 
     shadowJar {
         archiveFileName.set("${project.parent?.name}-${project.name}-${project.version}.jar")
+        archiveClassifier.set("")
         configurations.clear()
         configurations.add(flinkShadowJar)
         mergeServiceFiles()
@@ -83,6 +84,15 @@ val flinkShadowJar: Configuration by configurations.creating {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
     exclude(group = "org.slf4j")
     exclude(group = "org.apache.logging.log4j")
+}
+
+configurations {
+    all {
+        // https://logging.apache.org/log4j/2.x/faq.html#exclusions
+        // Good Explanation: https://stackoverflow.com/questions/42348755/class-path-contains-multiple-slf4j-bindings-error
+        exclude(group = "log4j", module = "log4j")
+        exclude(group = "org.slf4j", module = "slf4j-log4j12")
+    }
 }
 
 dependencies {
@@ -125,6 +135,8 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     listOf(
         "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
+        "net.mguenther.kafka:kafka-junit:3.1.0",
+        "uk.org.webcompere:system-stubs-jupiter:2.0.1",
         "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
 

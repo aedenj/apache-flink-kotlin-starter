@@ -3,21 +3,60 @@
  */
 package apache.flink.kotlin.starter
 
+import kafka.server.`KafkaConfig$`
+import net.mguenther.kafka.junit.EmbeddedKafkaCluster
+import net.mguenther.kafka.junit.EmbeddedKafkaCluster.provisionWith
+import net.mguenther.kafka.junit.EmbeddedKafkaClusterConfig.newClusterConfig
+import net.mguenther.kafka.junit.EmbeddedKafkaConfig.brokers
+import net.mguenther.kafka.junit.ObserveKeyValues.on
+import net.mguenther.kafka.junit.SendValues.to
+import net.mguenther.kafka.junit.TopicConfig
 import org.assertj.core.api.Assertions.*
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.extension.ExtendWith
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables
+import uk.org.webcompere.systemstubs.jupiter.SystemStub
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension
+import java.util.concurrent.CompletableFuture
+import kotlin.Exception
 
-@DisplayName("Example Tests")
+@DisplayName("Example Test")
+@ExtendWith(SystemStubsExtension::class)
 class ExampleTest {
-    @Test
-    @DisplayName("the answer to all of life")
-    fun TheAnswerToLife() {
-        assertThat(42).isEqualTo(Integer.sum(19, 23))
+    @SystemStub
+    private lateinit var environment: EnvironmentVariables
+    private val kafka:EmbeddedKafkaCluster = provisionWith(newClusterConfig().configure(
+        brokers().with(`KafkaConfig$`.`MODULE$`.ListenersProp(), "PLAINTEXT://localhost:65438"))
+    )
+    private lateinit var job:CompletableFuture<Void>
+
+    init {
+        kafka.start()
+        kafka.createTopic(TopicConfig.withName("source"))
+        kafka.createTopic(TopicConfig.withName("destination"))
+    }
+
+    @BeforeAll
+    fun setup() {
+        job = CompletableFuture.runAsync {
+            try {
+                environment.set("FLINK_ENV", "test")
+                main()
+            } catch (e:Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @AfterAll
+    fun tearDown() {
+        job.cancel(true)
+        kafka.stop()
     }
 
     @Test
-    @DisplayName("always right")
-    fun AlwaysRight() {
-        assertThat(true).isEqualTo(true)
+    fun `three messages are be consumed and produced`() {
+        kafka.send(to("source","a", "b", "c"))
+        kafka.observe(on("destination", 3))
     }
 }

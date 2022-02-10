@@ -11,19 +11,20 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
 import org.apache.flink.connector.kafka.source.KafkaSource
 
 fun main() {
-    val env = StreamExecutionEnvironment.getExecutionEnvironment();
+    val env = StreamExecutionEnvironment.getExecutionEnvironment()
+    val config = JobConfig.getInstance(System.getenv("FLINK_ENV"))
 
     val source = KafkaSource
         .builder<String>()
-        .setBootstrapServers(JobConfig.brokers())
+        .setBootstrapServers(config.brokers())
         .setTopics("source")
         .setValueOnlyDeserializer(SimpleStringSchema())
-        .setProperties(JobConfig.consumer())
+        .setProperties(config.consumer())
         .build()
 
     val sink = KafkaSink
         .builder<String>()
-        .setBootstrapServers(JobConfig.brokers())
+        .setBootstrapServers(config.brokers())
         .setRecordSerializer(
             KafkaRecordSerializationSchema.builder<String>()
                 .setTopic("destination")
@@ -31,12 +32,12 @@ fun main() {
                 .build()
         )
         .setDeliverGuarantee(DeliveryGuarantee.NONE)
-        .setKafkaProducerConfig(JobConfig.producer())
-        .build();
+        .setKafkaProducerConfig(config.producer())
+        .build()
 
     env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
         .sinkTo(sink)
-        .name("Destination Topic");
+        .name("Destination Topic")
 
     env.execute("Kotlin Flink Starter")
 }
