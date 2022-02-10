@@ -10,7 +10,6 @@ import net.mguenther.kafka.junit.EmbeddedKafkaClusterConfig.newClusterConfig
 import net.mguenther.kafka.junit.EmbeddedKafkaConfig.brokers
 import net.mguenther.kafka.junit.ObserveKeyValues.on
 import net.mguenther.kafka.junit.SendValues.to
-import net.mguenther.kafka.junit.TopicConfig
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
@@ -30,13 +29,11 @@ class ExampleTest {
     )
     private lateinit var job:JobClient
 
-    init {
-        kafka.start()
-        kafka.send(to("source","a", "b", "c"))
-    }
-
     @BeforeAll
     fun setup() {
+        kafka.start()
+        kafka.send(to("source","a", "b", "c"))
+
         environment.set("FLINK_ENV", "test")
         job = main().executeAsync()
     }
