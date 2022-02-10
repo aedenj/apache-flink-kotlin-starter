@@ -35,9 +35,9 @@ fun main(): StreamExecutionEnvironment {
         .setKafkaProducerConfig(config.producer())
         .build()
 
-    env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
-        .sinkTo(sink)
-        .name("Destination Topic")
-
-     return env
+    return env.apply {
+        fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
+            .sinkTo(sink)
+            .name("Destination Topic")
+    }
 }
