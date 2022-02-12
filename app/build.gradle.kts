@@ -96,6 +96,9 @@ dependencies {
     val slf4jVersion = "1.7.32"
     val junitVersion = "5.8.2"
     val assertjVersion = "3.20.2"
+    val coroutinesVersion = "1.6.0"
+    val kafkaJunitVersion = "3.1.0"
+    val typesafeVersion = "1.4.2"
 
     // Basics
     listOf(
@@ -123,13 +126,13 @@ dependencies {
     ).forEach { implementation(it) }
 
     // Supplementary
-    implementation("com.typesafe:config:1.4.2")
+    implementation("com.typesafe:config:$typesafeVersion")
 
     // Testing
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     listOf(
         "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
-        "net.mguenther.kafka:kafka-junit:3.1.0",
+        "net.mguenther.kafka:kafka-junit:$kafkaJunitVersion",
         "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
 
@@ -137,6 +140,6 @@ dependencies {
     listOf(
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
         "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
-        "com.typesafe:config:1.4.2"
+        "com.typesafe:config:$typesafeVersion"
     ).forEach { flinkShadowJar(it) }
 }

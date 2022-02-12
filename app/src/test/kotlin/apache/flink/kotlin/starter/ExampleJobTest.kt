@@ -24,7 +24,6 @@ class ExampleJobTest {
     private val kafka:EmbeddedKafkaCluster = provisionWith(newClusterConfig().configure(
         brokers().with(`KafkaConfig$`.`MODULE$`.ListenersProp(), "PLAINTEXT://" + config.brokers()))
     )
-    private lateinit var job:CompletableFuture<Void>
 
     @BeforeAll
     fun setup() {
@@ -39,10 +38,9 @@ class ExampleJobTest {
     @Test
     fun `three messages are consumed and produced`() {
         kafka.send(to("source","a", "b", "c"))
-        job = CompletableFuture.runAsync { main(arrayOf("--env", "test")) }
+        val job = CompletableFuture.runAsync { main(arrayOf("--env", "test")) }
 
         kafka.observe(on("destination", 3))
-
         job.cancel(true)
     }
 
