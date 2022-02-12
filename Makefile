@@ -5,7 +5,7 @@ default:
 	java -version
 
 run:
-	./gradlew run
+	./gradlew run --args="--env local"
 
 clean:
 	./gradlew clean

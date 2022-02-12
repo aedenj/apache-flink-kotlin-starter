@@ -10,7 +10,7 @@ services:
     hostname: jobmanager
     ports:
       - "8081:8081"
-    command: "standalone-job"
+    command: "standalone-job --env cluster"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
       FLINK_ENV: cluster

@@ -47,7 +47,9 @@ tasks {
         }
     }
 
-    jar {
+    shadowJar {
+        archiveFileName.set("${project.parent?.name}-${project.name}-${project.version}.jar")
+        archiveClassifier.set("")
         manifest.attributes.apply {
             putAll(mapOf(
                 "Main-Class" to entryPoint,
@@ -58,19 +60,11 @@ tasks {
                 "Built-by" to System.getProperty("user.name")
             ))
         }
-    }
 
-    shadowJar {
-        archiveFileName.set("${project.parent?.name}-${project.name}-${project.version}.jar")
-        archiveClassifier.set("")
         configurations.clear()
         configurations.add(flinkShadowJar)
         mergeServiceFiles()
         minimize()
-    }
-
-    named<JavaExec>("run") {
-        environment("FLINK_ENV", "local")
     }
 }
 
@@ -136,7 +130,6 @@ dependencies {
     listOf(
         "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
         "net.mguenther.kafka:kafka-junit:3.1.0",
-        "uk.org.webcompere:system-stubs-jupiter:2.0.1",
         "org.assertj:assertj-core:$assertjVersion"
     ).forEach { testImplementation(it) }
 
