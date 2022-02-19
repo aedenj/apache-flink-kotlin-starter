@@ -26,6 +26,7 @@ services:
     hostname: "broker-1"
     ports:
       - "9092:9092"
+      - "9010:9010"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zk1:2181
@@ -35,6 +36,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9010"
+      JMX_PORT: 9010
     volumes:
       - ../data/kafka/broker-1/data:/var/lib/kafka/data
     depends_on:
@@ -107,8 +110,11 @@ services:
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8085"
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: "GET,POST,PUT,OPTIONS"
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
+      SCHEMA_REGISTRY_JMX_HOST: localhost
+      SCHEMA_REGISTRY_JMX_PORT: 9010
     ports:
       - 8085:8085
+      - 9011:9010
     networks:
       - kafka-net
 

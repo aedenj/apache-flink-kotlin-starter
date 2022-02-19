@@ -10,6 +10,7 @@ services:
     hostname: jobmanager
     ports:
       - "8081:8081"
+      - "9249:9249"
     command: "standalone-job --env cluster"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
@@ -27,6 +28,8 @@ services:
     depends_on:
       - jobmanager
     command: "taskmanager.sh start-foreground"
+    ports:
+      - "9250:9249"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
       FLINK_ENV: cluster

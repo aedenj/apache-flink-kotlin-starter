@@ -34,4 +34,27 @@ First, let's setup the kafka topics. Run `make create-topics`.
 For quick feedback it's easiest to run the job locally,
 
 1. If you're using Intellij, use the usual methods.
-1. On the command line run `make run`
+2. On the command line run `make run`
+
+
+## Monitoring for Flink
+
+Both Prometheus and Grafana are available via Docker. In addition the Prometheus exporter has been enabled in the 
+local cluster. In order to see this all in action,
+
+1. Ensure Kafka is running. If it isn't run, 'make kafka-start'. I prefer to see the output. However, if you don't, you can add the `-d` option to the `kafka-start` command in the Makefile.
+2. If the topics for the default Flink Job don't already exist run `make create-topics`
+3. Now let's start up Grafana and Prometheus by running `make monitor-start`
+4. Start the Flink Cluster by executing `make flink-start`
+5. Navigate to the [example dashboard](http://localhost:9003/d/veLveEOiz/flink?orgId=1&refresh=5s&from=now-3h&to=now)
+
+You may not see results immediately. Wait a minute or so and you should start seeing results.
+
+Here are a list links,
+
+| Description | Link |
+----------------------
+| Prometheus - Useful for exploring the raw measuresments of a metric | http://localhost:9090/ |
+| Grafana - Home of all the dashboard | http://localhost:9003 |
+| Job Manager Prometheus Exporter | http://localhost:9249 |
+| Task Manager Prometheus Exporter | http://localhost:9250 |

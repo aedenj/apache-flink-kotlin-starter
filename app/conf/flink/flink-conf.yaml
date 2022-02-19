@@ -13,6 +13,9 @@ state.savepoints.dir: file:///tmp/flink-savepoints-directory
 heartbeat.interval: 1000
 heartbeat.timeout: 5000
 
+metrics.reporter: prom
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+
 parallelism.default: 1
 rest.flamegraph.enabled: true
 web.backpressure.refresh-interval: 10000

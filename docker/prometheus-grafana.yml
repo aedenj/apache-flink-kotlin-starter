@@ -1,0 +1,36 @@
+version: '3.8'
+
+networks:
+  kafka-net:
+    external: true
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    hostname: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../data/prometheus:/prometheus
+      - ../conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - kafka-net
+
+  grafana:
+    image: grafana/grafana:latest
+    hostname: grafana
+    environment:
+      GF_SERVER_HTTP_PORT: 9003
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    ports:
+      - "9003:9003"
+    depends_on:
+      - prometheus
+    volumes:
+      - ../conf/grafana/provisioning/:/etc/grafana/provisioning/
+      - ../data/grafana:/var/lib/grafana
+    networks:
+      - kafka-net
