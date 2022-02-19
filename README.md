@@ -44,7 +44,7 @@ local cluster. In order to see this all in action,
 2. If the topics for the default Flink Job don't already exist run `make create-topics`
 3. Now let's start up Grafana and Prometheus by running `make monitor-start`
 4. Start the Flink Cluster by executing `make flink-start`
-5. Navigate to the [example dashboard](http://localhost:9003/d/veLveEOiz/flink?orgId=1&refresh=5s&from=now-3h&to=now)
+5. Navigate to the [example dashboard](http://localhost:9003/d/wKbnD5Gnk/flink?orgId=1)
 
 You may not see results immediately. Wait a minute or so and you should start seeing results.
 

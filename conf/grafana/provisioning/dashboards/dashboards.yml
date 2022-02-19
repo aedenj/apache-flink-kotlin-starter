@@ -2,12 +2,13 @@
 apiVersion: 1
 
 providers:
-  - name: 'default'
+  - name: 'Flink'
     orgId: 1
-    folder: ''
+    folder: 'General'
     type: file
     disableDeletion: true
     updateIntervalSeconds: 10
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards
+      foldersFromFilesStructure: true
