@@ -14,6 +14,8 @@ test-t:
 clean:
 	./gradlew clean
 
+shadowjar:
+	./gradlew shadowjar
 
 #------------------------------------
 # Kafka
@@ -25,12 +27,20 @@ kafka-stop:
 	docker-compose -p kafka -f docker/kafka-cluster.yml down
 
 create-topics:
-	./scripts/create-topics.sh -b "broker-1:19092" "source:1:1" "destination:1:1"
+	./scripts/create-topics.sh -b "broker-1:19092" $(topic)
 
 delete-topics:
-	./scripts/delete-topics.sh -b "broker-1:19092" "source" "destination"
+	./scripts/delete-topics.sh -b "broker-1:19092" $(topic)
 
-recreate-topics: delete-topics create-topics
+create-default-topics:
+	$(MAKE) create-topics topic='"source:1:1" "destination:1:1"'
+
+delete-default-topics:
+	$(MAKE) delete-topics topic='"source" "destination"'
+
+recreate-default-topics:
+	$(MAKE) delete-topics topic='"source" "destination"'
+	$(MAKE) create-topics topic='"source:1:1" "destination:1:1"'
 
 start-producer:
 	docker exec -i kafka-tools kafka-console-producer --broker-list broker-1:19092 --topic source \
@@ -39,7 +49,7 @@ start-producer:
 #------------------------------------
 # Flink
 #------------------------------------
-flink-start:
+flink-start: shadowjar
 	docker-compose -p flink -f docker/flink-job-cluster.yml up -d
 
 flink-stop:

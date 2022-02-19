@@ -25,7 +25,7 @@ Now you have a single node Kafka cluster with various admin tools to make life a
 The sample job in this repo reads from a topic named `source` and writes to a topic named `destination`.
 There are a couple of ways of running this job depending on what you're trying to accomplish.
 
-First, let's setup the kafka topics. Run `make create-topics`.
+First, let's setup the kafka topics. Run `make create-default-topics`.
 
 ### Locally
 
@@ -35,7 +35,7 @@ For quick feedback it's easiest to run the job locally,
 2. On the command line run `make run`
 
 
-## Monitoring for Flink
+## Monitoring Flink
 
 Both Prometheus and Grafana are available via Docker. In addition the Prometheus exporter has been enabled in the 
 local cluster. In order to see this all in action,
