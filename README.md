@@ -42,7 +42,7 @@ For quick feedback it's easiest to run the job locally,
 Both Prometheus and Grafana are available via Docker. In addition the Prometheus exporter has been enabled in the 
 local cluster. In order to see this all in action,
 
-1. Ensure Kafka is running. If it isn't run, 'make kafka-start'. I prefer to see the output. However, if you don't, you can add the `-d` option to the `kafka-start` command in the Makefile.
+1. Ensure Kafka is running. If it isn't run, `make kafka-start`. I prefer to see the output. However, if you don't, you can add the `-d` option to the `kafka-start` command in the Makefile.
 2. If the topics for the default Flink Job don't already exist run `make create-topics`
 3. Now let's start up Grafana and Prometheus by running `make monitor-start`
 4. Start the Flink Cluster by executing `make flink-start`
@@ -52,9 +52,9 @@ You may not see results immediately. Wait a minute or so and you should start se
 
 Here are a list links,
 
-| Description | Link |
-----------------------
+| Description                                                         | Link |
+|---------------------------------------------------------------------|--------|
 | Prometheus - Useful for exploring the raw measuresments of a metric | http://localhost:9090/ |
-| Grafana - Home of all the dashboard | http://localhost:9003 |
-| Job Manager Prometheus Exporter | http://localhost:9249 |
-| Task Manager Prometheus Exporter | http://localhost:9250 |
+| Grafana - Home of all the dashboard                                 | http://localhost:9003 |
+| Job Manager Prometheus Exporter                                     | http://localhost:9249 |
+| Task Manager Prometheus Exporter                                    | http://localhost:9250 |
