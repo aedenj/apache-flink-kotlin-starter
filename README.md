@@ -1,8 +1,6 @@
-Apache Flink Starter in Kotlin
+Apache Flink Starter in Kotlin (In Progress)
 ========================
 A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flink-docs-master/) project using Kotlin.
-
-# (In Progress)
 
 ## Pre-Requisites
 
