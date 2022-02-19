@@ -25,7 +25,7 @@ application {
     mainClass.set(entryPoint)
     version = "1.0"
     applicationDefaultJvmArgs = listOf(
-        "-Dlog4j2.configurationFile=conf/flink/log4j-local.properties"
+        "-Dlog4j2.configurationFile=../conf/flink/log4j-local.properties"
         ,"-Dlog.file=./data/flink/logs" // log path for the flink webui when running dockerless
     )
 }
@@ -96,7 +96,6 @@ dependencies {
     val slf4jVersion = "1.7.32"
     val junitVersion = "5.8.2"
     val assertjVersion = "3.20.2"
-    val coroutinesVersion = "1.6.0"
     val kafkaJunitVersion = "3.1.0"
     val typesafeVersion = "1.4.2"
 
