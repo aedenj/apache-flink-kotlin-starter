@@ -36,7 +36,10 @@ For quick feedback it's easiest to run the job locally,
 
 ### Using the Job Cluster
 
-Run `make flink-start`. This will run the job within a job cluster that is setup in [`flink-job-cluster.yml`](https://github.com/aedenj/apache-flink-kotlin-starter/blob/main/docker/flink-job-cluster.yml). 
+1. Run `make flink-start`. 
+2. Verify the cluster is running by [navigating to the UI](http://localhost:8081/)
+
+This will run the job with the cluster defined in [`flink-job-cluster.yml`](https://github.com/aedenj/apache-flink-kotlin-starter/blob/main/docker/flink-job-cluster.yml). 
 By default the cluster runs one task manager and one slot however this can be changed. The `make flink-start` 
 command accepts two parameters `NUM_TASK_MANAGERS` and `NUM_TASK_SLOTS`. For example, one can run
 
