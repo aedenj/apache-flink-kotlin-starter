@@ -13,8 +13,8 @@ services:
       - "9249:9249"
     command: "standalone-job --env cluster"
     environment:
-      JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV: cluster
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_ENV=cluster
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
@@ -29,10 +29,14 @@ services:
       - jobmanager
     command: "taskmanager.sh start-foreground"
     ports:
-      - "9250:9249"
+      - "9250-9255:9249"
     environment:
-      JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV: cluster
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_ENV=cluster
+      - |
+        FLINK_PROPERTIES=
+          taskmanager.numberOfTaskSlots: ${NUM_TASK_SLOTS:?err}
+          parallelism.default: ${DEFAULT_PARALLELISM:?err}
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf

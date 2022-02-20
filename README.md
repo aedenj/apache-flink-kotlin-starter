@@ -34,6 +34,19 @@ For quick feedback it's easiest to run the job locally,
 1. If you're using Intellij, use the usual methods.
 2. On the command line run `make run`
 
+### Using the Job Cluster
+
+Run `make flink-start`. This will run the job within a job cluster that is setup in [`flink-job-cluster.yml`](https://github.com/aedenj/apache-flink-kotlin-starter/blob/main/docker/flink-job-cluster.yml). 
+By default the cluster runs one task manager and one slot however this can be changed. The `make flink-start` 
+command accepts two parameters `NUM_TASK_MANAGERS` and `NUM_TASK_SLOTS`. For example, one can run
+
+```
+make flink-start NUM_TASK_MANAGERS=2 NUM_TASK_SLOTS=3 
+```
+
+and this will result in a job cluster running two task managers with three slots each and a default parallelism of six.
+
+In order to stop the job run `make flink-stop`
 
 ## Monitoring Flink
 
@@ -56,3 +69,12 @@ Here are a list links,
 | Grafana - Home of all the dashboard                                 | http://localhost:9003 |
 | Job Manager Prometheus Exporter                                     | http://localhost:9249 |
 | Task Manager Prometheus Exporter                                    | http://localhost:9250 |
+
+
+## Summary of Useful Commands
+
+| Service       | Command(s)                                                                                      |
+|---------------|-------------------------------------------------------------------------------------------------|
+| Kafka Cluster | `make kafka-start`, `make kafka-stop`                                                           |
+| Flink Cluster | `make flink-start`, ` make flink-start NUM_TASK_SLOTS=2 NUM_TASK_MANAGERS=3`, `make flink-stop` |
+| Monitoring | `make monitor-start`, `make monitor-stop`                                                       |

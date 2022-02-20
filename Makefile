@@ -1,5 +1,9 @@
 .SILENT:
 
+NUM_TASK_MANAGERS := 1
+NUM_TASK_SLOTS := 1
+DEFAULT_PARALLELISM := $$(( $(NUM_TASK_MANAGERS) * $(NUM_TASK_SLOTS) ))
+
 default:
 	docker -v
 	java -version
@@ -7,7 +11,7 @@ default:
 run:
 	./gradlew run --args="--env local"
 
-# Start Contintuous Testing
+# Start Continuous Testing
 test-t:
 	./gradlew -t test
 
@@ -50,10 +54,11 @@ start-producer:
 # Flink
 #------------------------------------
 flink-start: shadowjar
-	docker-compose -p flink -f docker/flink-job-cluster.yml up -d
+	NUM_TASK_SLOTS=$(NUM_TASK_SLOTS) DEFAULT_PARALLELISM=$(DEFAULT_PARALLELISM) docker-compose -p flink -f docker/flink-job-cluster.yml up -d --scale taskmanager=$(NUM_TASK_MANAGERS)
 
 flink-stop:
-	docker-compose -p flink -f docker/flink-job-cluster.yml down
+	# These environment variables are only needed to satisfy docker and don't do anything here
+	NUM_TASK_SLOTS=0 DEFAULT_PARALLELISM=0 docker-compose -p flink -f docker/flink-job-cluster.yml down
 
 #------------------------------------
 # Monitoring
