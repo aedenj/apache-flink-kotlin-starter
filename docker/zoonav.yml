@@ -1,0 +1,17 @@
+version: '3.8'
+
+networks:
+  kafka-net:
+    external: true
+
+services:
+  zoonavigator:
+    image: elkozmon/zoonavigator:latest
+    ports:
+      - "9001:8000"
+    environment:
+      HTTP_PORT: 8000
+      AUTO_CONNECT_CONNECTION_STRING: "zk1:2181"
+    networks:
+      - kafka-net
+

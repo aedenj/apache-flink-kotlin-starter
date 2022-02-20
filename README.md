@@ -70,7 +70,14 @@ Here are a list links,
 | Job Manager Prometheus Exporter                                     | http://localhost:9249 |
 | Task Manager Prometheus Exporter                                    | http://localhost:9250 |
 
+## Additional Containers
 
+- **ZooNavigator** - A web-based UI for ZooKeeper that you can start and stop using `make zoonav-start` and 
+  `make zoonav-stop`. Navigate to [http://localhost:9001/](http://localhost:9001/) for access. 
+- **Schema Registry & UI** - A RESTful metadata storage for your Avro, JSON and Protobuf schemas. You can 
+  start or stop these services using `make registry-start` and `make registry-stop`. The UI can be access at
+  http://localhost:8000/
+ 
 ## Summary of Useful Commands
 
 | Service       | Command(s)                                                                                      |
@@ -78,3 +85,5 @@ Here are a list links,
 | Kafka Cluster | `make kafka-start`, `make kafka-stop`                                                           |
 | Flink Cluster | `make flink-start`, ` make flink-start NUM_TASK_SLOTS=2 NUM_TASK_MANAGERS=3`, `make flink-stop` |
 | Monitoring | `make monitor-start`, `make monitor-stop`                                                       |
+| Schema Registry | `make registry-start`, `make registry-stop` |
+| ZooNavigator | `make zoonav-start`, `make zoonav-stop` |

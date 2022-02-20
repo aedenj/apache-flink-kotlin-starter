@@ -50,6 +50,18 @@ start-producer:
 	docker exec -i kafka-tools kafka-console-producer --broker-list broker-1:19092 --topic source \
 		--property "parse.key=true" --property "key.separator=:"
 
+registry-start:
+	docker-compose -p schema-registry -f docker/schema-registry.yml up -d
+
+registry-stop:
+	docker-compose -p schema-registry -f docker/schema-registry.yml down
+
+zoonav-start:
+	docker-compose -p zoonav -f docker/zoonav.yml up -d
+
+zoonav-stop:
+	docker-compose -p zoonav -f docker/zoonav.yml down
+
 #------------------------------------
 # Flink
 #------------------------------------

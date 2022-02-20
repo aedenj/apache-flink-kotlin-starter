@@ -45,7 +45,6 @@ services:
     networks:
       - kafka-net
 
-
   kafka-tools:
     image: confluentinc/cp-kafka:latest
     hostname: "kafka-tools"
@@ -56,37 +55,8 @@ services:
     networks:
       - kafka-net
 
-
-  zoonavigator:
-    image: elkozmon/zoonavigator:latest
-    ports:
-      - "9001:8000"
-    environment:
-      HTTP_PORT: 8000
-      AUTO_CONNECT_CONNECTION_STRING: "zk1:2181"
-    depends_on:
-      - zk1
-    restart: always
-    networks:
-      - kafka-net
-
-  kafka-rest-proxy:
-    image: confluentinc/cp-kafka-rest:5.5.1
-    hostname: kafka-rest-proxy
-    ports:
-      - "8082:8082"
-    environment:
-      KAFKA_REST_LISTENERS: http://0.0.0.0:8082/
-      KAFKA_REST_HOST_NAME: kafka-rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: PLAINTEXT://broker-1:19092
-    depends_on:
-      - broker-1
-    networks:
-      - kafka-net
-
   kafdrop:
     image: obsidiandynamics/kafdrop
-    restart: "always"
     ports:
       - "8001:9000"
     environment:
@@ -97,38 +67,3 @@ services:
       - "broker-1"
     networks:
       - kafka-net
-
-  schema-registry:
-    image: confluentinc/cp-schema-registry:latest
-    restart: always
-    depends_on:
-      - zk1
-      - broker-1
-    environment:
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "PLAINTEXT://broker-1:19092"
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8085"
-      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: "GET,POST,PUT,OPTIONS"
-      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
-      SCHEMA_REGISTRY_JMX_HOST: localhost
-      SCHEMA_REGISTRY_JMX_PORT: 9010
-    ports:
-      - 8085:8085
-      - 9011:9010
-    networks:
-      - kafka-net
-
-  schema-registry-ui:
-    image: landoop/schema-registry-ui
-    hostname: schema-registry-ui
-    ports:
-      - "8000:8000"
-    environment:
-      SCHEMAREGISTRY_URL: http://schema-registry:8085
-      PROXY: "true"
-    depends_on:
-      - schema-registry
-    restart: unless-stopped
-    networks:
-      - kafka-net
-
