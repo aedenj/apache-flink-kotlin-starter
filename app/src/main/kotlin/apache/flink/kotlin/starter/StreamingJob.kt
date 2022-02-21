@@ -33,11 +33,30 @@ object StreamingJob {
             .setKafkaProducerConfig(config.producer())
             .build()
 
-        env.apply {
-            fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
-            .sinkTo(sink)
-            .name("Destination Topic")
-        }.execute("Kotlin Flink Starter")
+        val sinkTwo = KafkaSink
+            .builder<String>()
+            .setBootstrapServers(config.brokers())
+            .setRecordSerializer(
+                KafkaRecordSerializationSchema.builder<String>()
+                    .setTopic("destination-two")
+                    .setValueSerializationSchema(SimpleStringSchema())
+                    .build()
+            )
+            .setDeliverGuarantee(DeliveryGuarantee.NONE)
+            .setKafkaProducerConfig(config.producer())
+            .build()
+
+        val stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
+
+        stream
+            .filter { it == "foo" }
+            .sinkTo(sink).name("Destination Topic")
+
+        stream
+            .filter { it == "bar" }
+            .sinkTo(sinkTwo).name("Destination Two Topic")
+
+        env.execute("Kotlin Flink Starter")
     }
 }
 

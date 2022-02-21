@@ -62,7 +62,7 @@ zoonav-stop:
 #------------------------------------
 # Flink
 #------------------------------------
-flink-start: shadowjar
+flink-start: flink-stop shadowjar
 	NUM_TASK_SLOTS=$(NUM_TASK_SLOTS) DEFAULT_PARALLELISM=$(DEFAULT_PARALLELISM) docker-compose -p flink -f docker/flink-job-cluster.yml up -d --scale taskmanager=$(NUM_TASK_MANAGERS)
 
 flink-stop:
