@@ -53,13 +53,12 @@ In order to stop the job run `make flink-stop`
 
 ### Observing the Job in Action
 
-After starting the job with one of the methods above, let's observe it reading an writing a message from one Kafak topic to another.
+After starting the job with one of the methods above, let's observe it reading and writing a message from one topic to another.
 
 1. Start the job using one of the methods above.
 2. In a new terminal start a Kafka producer by running `make start-producer topic='source'`
 3. You'll see the prompt `>`. Enter the message `1:{ message: "Hello World!" }`
-4. Navigate to the [Kafdrop](http://localhost:8001/) and view the messages both the `source` and `destination` topics. 
-   If not already so then be sure to change the format from AVRO to DEFAULT or else you won't see anything.
+4. Navigate to the [Kafka UI](http://localhost:8001/) and view the messages both the `source` and `destination` topics. 
 
 You should see the message `1:{ message: "Hello World!" }` in both topics.
 
@@ -68,7 +67,8 @@ You should see the message `1:{ message: "Hello World!" }` in both topics.
 Both Prometheus and Grafana are available via Docker. In addition the Prometheus exporter has been enabled in the 
 local cluster. In order to see this all in action,
 
-1. Ensure Kafka is running. If it isn't run, `make kafka-start`. I prefer to see the output. However, if you don't, you can add the `-d` option to the `kafka-start` command in the [Makefile](https://github.com/aedenj/apache-flink-kotlin-starter/blob/main/Makefile#L21).
+1. Ensure Kafka is running. If it isn't run, `make kafka-start`. I prefer to see the output. However, if you don't, 
+   you can add the `-d` option to the `kafka-start` command in the [Makefile](https://github.com/aedenj/apache-flink-kotlin-starter/blob/main/Makefile#L21).
 2. If the topics for the default Flink Job don't already exist run `make create-topics`
 3. Now let's start up Grafana and Prometheus by running `make monitor-start`
 4. Start the Flink Cluster by executing `make flink-start`
@@ -108,3 +108,5 @@ Here are a list links,
 
 - [kcat](https://github.com/edenhill/kcat#running-in-docker) (Formly KafkaCat) - a generic non-JVM producer and consumer
   for Apache Kafka >=0.8, think of it as a netcat for Kafka. 
+- [Kafka UI](https://github.com/provectus/kafka-ui) - A feature rich UI on par with the Confluent UI to monitor and 
+  manage Kafka clusters.
