@@ -103,6 +103,7 @@ Here are a list links,
 ## Useful References
 
 - [kcat](https://github.com/edenhill/kcat#running-in-docker) (Formly KafkaCat) - a generic non-JVM producer and consumer
-  for Apache Kafka >=0.8, think of it as a netcat for Kafka. 
+  for Apache Kafka >=0.8, think of it as a netcat for Kafka. In addition the [Confluent Docs](https://docs.confluent.io/4.0.1/app-development/kafkacat-usage.html#) 
+  has helpful examples.
 - [Kafka UI](https://github.com/provectus/kafka-ui) - A feature rich UI on par with the Confluent UI to monitor and 
   manage Kafka clusters.
