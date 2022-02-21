@@ -20,6 +20,7 @@ services:
       - ../data/zookeeper/zk1/datalog:/datalog
     networks:
       - kafka-net
+    restart: unless-stopped
 
   broker-1:
     image: wurstmeister/kafka:latest
@@ -44,6 +45,7 @@ services:
       - zk1
     networks:
       - kafka-net
+    restart: unless-stopped
 
   kafka-tools:
     image: confluentinc/cp-kafka:latest
@@ -54,6 +56,7 @@ services:
       - broker-1
     networks:
       - kafka-net
+    restart: unless-stopped
 
   kafdrop:
     image: obsidiandynamics/kafdrop
@@ -67,3 +70,4 @@ services:
       - "broker-1"
     networks:
       - kafka-net
+    restart: unless-stopped
