@@ -47,7 +47,7 @@ recreate-default-topics:
 	$(MAKE) create-topics topic='"source:1:1" "destination:1:1"'
 
 start-producer:
-	docker exec -i kafka-tools kafka-console-producer --broker-list broker-1:19092 --topic source \
+	docker exec -i kafka-tools kafka-console-producer --broker-list broker-1:19092 --topic $(topic) \
 		--property "parse.key=true" --property "key.separator=:"
 
 registry-start:

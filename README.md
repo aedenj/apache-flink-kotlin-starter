@@ -51,6 +51,18 @@ and this will result in a job cluster running two task managers with three slots
 
 In order to stop the job run `make flink-stop`
 
+### Observing the Job in Action
+
+After starting the job with one of the methods above, let's observe it reading an writing a message from one Kafak topic to another.
+
+1. Start the job using one of the methods above.
+2. In a new terminal start a Kafka producer by running `make start-producer topic='source'`
+3. You'll see the prompt `>`. Enter the message `1:{ message: "Hello World!" }`
+4. Navigate to the [Kafdrop](http://localhost:8001/) and view the messages both the `source` and `destination` topics. 
+   If not already so then be sure to change the format from AVRO to DEFAULT or else you won't see anything.
+
+You should see the message `1:{ message: "Hello World!" }` in both topics.
+
 ## Monitoring Flink
 
 Both Prometheus and Grafana are available via Docker. In addition the Prometheus exporter has been enabled in the 
@@ -81,7 +93,7 @@ Here are a list links,
   start or stop these services using `make registry-start` and `make registry-stop`. The UI can be access at
   http://localhost:8000/
  
-## Summary of Useful Commands
+## Useful Commands
 
 | Service       | Command(s)                                                                                      |
 |---------------|-------------------------------------------------------------------------------------------------|
@@ -90,3 +102,9 @@ Here are a list links,
 | Monitoring | `make monitor-start`, `make monitor-stop`                                                       |
 | Schema Registry | `make registry-start`, `make registry-stop` |
 | ZooNavigator | `make zoonav-start`, `make zoonav-stop` |
+
+
+## Useful References
+
+- [kcat](https://github.com/edenhill/kcat#running-in-docker) (Formly KafkaCat) - a generic non-JVM producer and consumer
+  for Apache Kafka >=0.8, think of it as a netcat for Kafka. 
