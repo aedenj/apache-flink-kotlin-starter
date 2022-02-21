@@ -89,9 +89,9 @@ Here are a list links,
 
 - **ZooNavigator** - A web-based UI for ZooKeeper that you can start and stop using `make zoonav-start` and 
   `make zoonav-stop`. Navigate to [http://localhost:9001/](http://localhost:9001/) for access. 
-- **Schema Registry & UI** - A RESTful metadata storage for your Avro, JSON and Protobuf schemas. You can 
-  start or stop these services using `make registry-start` and `make registry-stop`. The UI can be access at
-  http://localhost:8000/
+- **Schema Registry** - A RESTful metadata storage for your Avro, JSON and Protobuf schemas. You can 
+  start or stop these services using `make registry-start` and `make registry-stop`. The UI can be access via
+  the [Kafka UI](http://localhost:8001/ui/clusters/local/schemas)
  
 ## Useful Commands
 

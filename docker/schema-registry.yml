@@ -14,25 +14,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8085"
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: "GET,POST,PUT,OPTIONS"
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
-      SCHEMA_REGISTRY_JMX_HOST: localhost
-      SCHEMA_REGISTRY_JMX_PORT: 9010
     ports:
       - 8085:8085
-      - 9011:9010
     networks:
       - kafka-net
-
-  schema-registry-ui:
-    image: landoop/schema-registry-ui
-    hostname: schema-registry-ui
-    ports:
-      - "8000:8000"
-    environment:
-      SCHEMAREGISTRY_URL: http://schema-registry:8085
-      PROXY: "true"
-    depends_on:
-      - schema-registry
-    restart: unless-stopped
-    networks:
-      - kafka-net
-
