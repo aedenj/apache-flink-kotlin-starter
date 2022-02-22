@@ -113,7 +113,8 @@ dependencies {
 
     // Connectors & Formats
     listOf(
-        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion"
+        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
+        "org.apache.flink:flink-avro:$flinkVersion"
     ).forEach { implementation(it) }
 
     // Logging
@@ -125,7 +126,9 @@ dependencies {
     ).forEach { implementation(it) }
 
     // Supplementary
-    implementation("com.typesafe:config:$typesafeVersion")
+    listOf(
+        "com.typesafe:config:$typesafeVersion"
+    ).forEach { implementation(it)}
 
     // Testing
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
@@ -139,6 +142,7 @@ dependencies {
     listOf(
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
         "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
-        "com.typesafe:config:$typesafeVersion"
+        "com.typesafe:config:$typesafeVersion",
+        "org.apache.flink:flink-avro:$flinkVersion"
     ).forEach { flinkShadowJar(it) }
 }
