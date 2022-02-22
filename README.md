@@ -1,6 +1,7 @@
 Apache Flink Starter in Kotlin 
 ========================
-A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flink-docs-master/) project using Kotlin.
+A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flink-docs-master/) project using Kotlin using
+and Kafka.
 
 <!-- toc-begin -->
 * [Pre-requisites](#pre-requisites)
