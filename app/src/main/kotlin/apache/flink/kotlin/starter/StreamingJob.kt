@@ -1,7 +1,6 @@
 package apache.flink.kotlin.starter
 
 import org.apache.avro.Schema
-import org.apache.avro.generic.GenericData
 import org.apache.avro.generic.GenericRecord
 import org.apache.flink.api.common.eventtime.WatermarkStrategy
 import org.apache.flink.connector.base.DeliveryGuarantee
@@ -11,7 +10,6 @@ import org.apache.flink.connector.kafka.source.KafkaSource
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema
 import org.apache.flink.formats.avro.AvroSerializationSchema
 import org.apache.flink.formats.avro.typeutils.GenericRecordAvroTypeInfo
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.JsonNode
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
 import org.apache.flink.streaming.util.serialization.JSONKeyValueDeserializationSchema
@@ -22,7 +20,7 @@ object StreamingJob {
             getConfig().disableForceKryo()
         }
 
-        val schema = Schema.Parser().parse(
+        val schemaString =
             """
             {
                 "type": "record",
@@ -33,7 +31,7 @@ object StreamingJob {
                 ]
            };
            """.trimIndent()
-        )
+        val schema = Schema.Parser().parse(schemaString)
 
         val source = KafkaSource
             .builder<ObjectNode>()
@@ -52,40 +50,33 @@ object StreamingJob {
                     .setValueSerializationSchema(AvroSerializationSchema.forGeneric(schema))
                     .build()
             )
-            .setDeliverGuarantee(DeliveryGuarantee.NONE)
+            .setDeliverGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
             .setKafkaProducerConfig(config.producer())
             .build()
 
         val sinkTwo = KafkaSink
-            .builder<JsonNode>()
+            .builder<GenericRecord>()
             .setBootstrapServers(config.brokers())
             .setRecordSerializer(
-                KafkaRecordSerializationSchema.builder<JsonNode>()
+                KafkaRecordSerializationSchema.builder<GenericRecord>()
                     .setTopic("destination-two")
-                    .setValueSerializationSchema(JsonToAvroValueSerializer(AvroSerializationSchema.forGeneric(schema)))
-                    .setKeySerializationSchema(JsonToAvroKeySerializer())
+                    .setValueSerializationSchema(AvroSerializationSchema.forGeneric(schema))
                     .build()
             )
-            .setDeliverGuarantee(DeliveryGuarantee.NONE)
+            .setDeliverGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
             .setKafkaProducerConfig(config.producer())
             .build()
 
         val stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
 
         stream
-            .filter { it.get("value").get("name").toString() == "typeA"  }
-            .map({
-                GenericData.Record(schema).apply {
-                    put("name", it.get("value").get("name").toString())
-                    put("device", it.get("value").get("device").toString())
-                }
-            }, GenericRecordAvroTypeInfo(schema))
+            .filter { it.get("value").get("name").textValue().equals("typeA") }
+            .map(JsonToAvro(schemaString), GenericRecordAvroTypeInfo(schema))
             .sinkTo(sink).name("Destination Topic")
 
         stream
-            .filter { it.get("value").get("name").toString() != "typeA"  }
-            .map { it.get("value") }
-            .returns(JsonNode::class.java)
+            .filter { it.get("value").get("name").textValue() != "typeA"  }
+            .map(JsonToAvro(schemaString), GenericRecordAvroTypeInfo(schema))
             .sinkTo(sinkTwo).name("Destination Two Topic")
 
         env.execute("Kotlin Flink Starter")
