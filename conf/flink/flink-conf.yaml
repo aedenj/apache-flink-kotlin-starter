@@ -18,14 +18,3 @@ metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusRepor
 
 rest.flamegraph.enabled: true
 web.backpressure.refresh-interval: 10000
-  taskmanager.numberOfTaskSlots: 1
-  parallelism.default: 1
-
-
-  taskmanager.numberOfTaskSlots: 1
-  parallelism.default: 1
-
-
-  taskmanager.numberOfTaskSlots: 1
-  parallelism.default: 1
-
