@@ -23,6 +23,7 @@ class JsonToAvroValueSerializer(serializer: AvroSerializationSchema<GenericRecor
            };
            """.trimIndent()
         )
+
         val record = GenericData.Record(schema).apply {
             put("name", element.get("name").toString())
             put("device", element.get("device").toString())

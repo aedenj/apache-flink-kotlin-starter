@@ -1,14 +1,16 @@
 package apache.flink.kotlin.starter
 
 import org.apache.avro.Schema
+import org.apache.avro.generic.GenericData
+import org.apache.avro.generic.GenericRecord
 import org.apache.flink.api.common.eventtime.WatermarkStrategy
-import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.connector.base.DeliveryGuarantee
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema
 import org.apache.flink.connector.kafka.sink.KafkaSink
 import org.apache.flink.connector.kafka.source.KafkaSource
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema
 import org.apache.flink.formats.avro.AvroSerializationSchema
+import org.apache.flink.formats.avro.typeutils.GenericRecordAvroTypeInfo
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.JsonNode
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
@@ -32,6 +34,7 @@ object StreamingJob {
            };
            """.trimIndent()
         )
+
         val source = KafkaSource
             .builder<ObjectNode>()
             .setBootstrapServers(config.brokers())
@@ -41,13 +44,12 @@ object StreamingJob {
             .build()
 
         val sink = KafkaSink
-            .builder<JsonNode>()
+            .builder<GenericRecord>()
             .setBootstrapServers(config.brokers())
             .setRecordSerializer(
-                KafkaRecordSerializationSchema.builder<JsonNode>()
+                KafkaRecordSerializationSchema.builder<GenericRecord>()
                     .setTopic("destination")
-                    .setValueSerializationSchema(JsonToAvroValueSerializer(AvroSerializationSchema.forGeneric(schema)))
-                    .setKeySerializationSchema(JsonToAvroKeySerializer())
+                    .setValueSerializationSchema(AvroSerializationSchema.forGeneric(schema))
                     .build()
             )
             .setDeliverGuarantee(DeliveryGuarantee.NONE)
@@ -72,8 +74,12 @@ object StreamingJob {
 
         stream
             .filter { it.get("value").get("name").toString() == "typeA"  }
-            .map { it.get("value") }
-            .returns(JsonNode::class.java)
+            .map({
+                GenericData.Record(schema).apply {
+                    put("name", it.get("value").get("name").toString())
+                    put("device", it.get("value").get("device").toString())
+                }
+            }, GenericRecordAvroTypeInfo(schema))
             .sinkTo(sink).name("Destination Topic")
 
         stream
