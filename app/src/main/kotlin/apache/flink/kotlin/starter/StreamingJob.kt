@@ -16,7 +16,7 @@ import org.apache.flink.streaming.util.serialization.JSONKeyValueDeserialization
 
 object StreamingJob {
     fun run(config: JobConfig) {
-        val env = StreamExecutionEnvironment.getExecutionEnvironment().apply {
+        val job = StreamExecutionEnvironment.getExecutionEnvironment().apply {
             getConfig().disableForceKryo()
         }
 
@@ -67,7 +67,7 @@ object StreamingJob {
             .setKafkaProducerConfig(config.producer())
             .build()
 
-        val stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
+        val stream = job.fromSource(source, WatermarkStrategy.noWatermarks(), "Source Topic")
 
         stream
             .filter { it.get("value").get("name").textValue().equals("typeA") }
@@ -79,7 +79,7 @@ object StreamingJob {
             .map(JsonToAvro(schemaString), GenericRecordAvroTypeInfo(schema))
             .sinkTo(sinkTwo).name("Destination Two Topic")
 
-        env.execute("Kotlin Flink Starter")
+        job.execute("Kotlin Flink Starter")
     }
 }
 
