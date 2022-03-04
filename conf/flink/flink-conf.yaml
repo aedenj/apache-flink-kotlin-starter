@@ -21,4 +21,4 @@ web.backpressure.refresh-interval: 10000
 
 env.java.opts: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.host='0.0.0.0' -Djava.rmi.server.hostname='0.0.0.0'
 env.java.opts.jobmanager: -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999
-env.java.opts.taskmanager: -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999
+env.java.opts.taskmanager: -Dcom.sun.management.jmxremote.port=10000 -Dcom.sun.management.jmxremote.rmi.port=10000

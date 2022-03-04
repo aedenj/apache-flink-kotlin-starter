@@ -29,8 +29,8 @@ services:
       - jobmanager
     command: "taskmanager.sh start-foreground --env cluster"
     ports:
-      - "9250-9255:9249"    # Prometheus Exporter
-      - "10000-10005:9999"  # JMX Remote Port
+      - "9250-9255:9249" # Prometheus Exporter
+      - "10000:10000"    # JMX Remote Port
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - |
