@@ -74,7 +74,9 @@ local cluster. In order to see this all in action,
 4. Start the Flink Cluster by executing `make flink-start`
 5. Navigate to the [example dashboard](http://localhost:9003/d/wKbnD5Gnk/flink?orgId=1)
 
-You may not see results immediately. Wait a minute or so and you should start seeing results.
+You may not see results immediately. Wait a minute or so and you should start seeing results. Lastly, if you run
+the Flink cluster with more than one task manager that task manager will be automatically picked using the discovery
+service setup in prometheus.
 
 Here are a list links,
 
