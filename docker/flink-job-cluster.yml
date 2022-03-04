@@ -9,17 +9,16 @@ services:
     image: flink:1.14.3-scala_2.11-java11
     hostname: jobmanager
     ports:
-      - "8081:8081"
-      - "9249:9249"
+      - "8081:8081"   # Flink Web UI
+      - "9249:9249"   # Prometheus Exporter
     command: "standalone-job --env cluster"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV: cluster
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
-      - ../data/flink/checkpoints:/tmp/flink-checkpoints-directory
-      - ../data/flink/savepoints:/tmp/flink-savepoints-directory
+      - ../data/flink/checkpoints:/tmp/flink-checkpoints
+      - ../data/flink/savepoints:/tmp/flink-savepoints
     networks:
       - kafka-net
 
@@ -27,18 +26,17 @@ services:
     image: flink:1.14.3-scala_2.11-java11
     depends_on:
       - jobmanager
-    command: "taskmanager.sh start-foreground"
+    command: "taskmanager.sh start-foreground --env cluster"
     ports:
-      - "9250-9255:9249"
+      - "9250-9255:9249"    # Prometheus Exporter
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV: cluster
       FLINK_ENV_JAVA_OPTS_TM: "-Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err} -Dparallelism.default=${DEFAULT_PARALLELISM:?err}"
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
-      - ../data/flink/checkpoints:/tmp/flink-checkpoints-directory
-      - ../data/flink/savepoints:/tmp/flink-savepoints-directory
+      - ../data/flink/checkpoints:/tmp/flink-checkpoints
+      - ../data/flink/savepoints:/tmp/flink-savepoints
     networks:
       - kafka-net
 
