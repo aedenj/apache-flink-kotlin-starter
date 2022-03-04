@@ -80,12 +80,12 @@ service setup in prometheus.
 
 Here are a list links,
 
-| Description                                                         | Link |
-|---------------------------------------------------------------------|--------|
-| Prometheus - Useful for exploring the raw measuresments of a metric | http://localhost:9090 |
-| Grafana - Home of all the dashboard                                 | http://localhost:9003 |
-| Job Manager Prometheus Exporter                                     | http://localhost:9249 |
-| Task Manager Prometheus Exporter                                    | http://localhost:9250 |
+| Description                                                         | Link                       |
+|---------------------------------------------------------------------|----------------------------|
+| Prometheus - Useful for exploring the raw measuresments of a metric | http://localhost:9090      |
+| Grafana - Home of all the dashboard                                 | http://localhost:9003      |
+| Job Manager Prometheus Exporter                                     | http://localhost:9249      |
+| Task Manager Prometheus Exporter                                    | http://localhost:9250-9255 |
 
 ## Additional Containers
 
@@ -94,12 +94,13 @@ Here are a list links,
  
 ## Useful Commands
 
-| Service       | Command(s)                                                                                      |
-|---------------|-------------------------------------------------------------------------------------------------|
-| Kafka Cluster | `make kafka-start`, `make kafka-stop`                                                           |
-| Flink Cluster | `make flink-start`, ` make flink-start NUM_TASK_SLOTS=2 NUM_TASK_MANAGERS=3`, `make flink-stop` |
-| Monitoring | `make monitor-start`, `make monitor-stop`                                                       |
-| ZooNavigator | `make zoonav-start`, `make zoonav-stop` |
+| Service       | Command(s)                                                                                                                                                      |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Kafka Cluster | `make kafka-start`, `make kafka-stop`                                                                                                                           |
+ | Kafka        | `make create-default-topics`, `make delete-default-topics`, `make create-topics topic='"topicA:2:3" "topicB:5:1"'`, `make delete-topics topic='"topicA" "topicB"'` |
+| Flink Cluster | `make flink-start`, ` make flink-start NUM_TASK_SLOTS=2 NUM_TASK_MANAGERS=3`, `make flink-stop`                                                                 |
+| Monitoring | `make monitor-start`, `make monitor-stop`                                                                                                                       |
+| ZooNavigator | `make zoonav-start`, `make zoonav-stop`                                                                                                                         |
 
 
 ## Useful References
