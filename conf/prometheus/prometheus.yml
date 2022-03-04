@@ -5,5 +5,9 @@ global:
 
 scrape_configs:
   - job_name: 'flink'
-    static_configs:
-      - targets: ['jobmanager:9249', 'taskmanager:9249']
+    dns_sd_configs:
+      - names:
+          - jobmanager
+          - taskmanager
+        type: A
+        port: 9249
