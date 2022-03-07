@@ -49,8 +49,9 @@ make flink-start NUM_TASK_MANAGERS=2 NUM_TASK_SLOTS=3
 ```
 
 and this will result in a job cluster running two task managers with three slots each and a default parallelism of six.
-
 In order to stop the job run `make flink-stop`
+
+*Note: The number of task managers is limited to 5.*
 
 ### Observing the Job in Action
 
@@ -63,8 +64,29 @@ After starting the job with one of the methods above, let's observe it reading a
 
 You should see the message `1:{ message: "Hello World!" }` in both topics.
 
+
 ## Monitoring Flink
 
+### With JDK Mission Control via JMX-MP
+
+The following setup is quite a lot of work, but I've found it to be worthwhile for learning the details of what
+is going on under the hood of Flink. This tool also helped me clarify the relationship between Flink concepts like
+task slots, tasks, operators, parallelism and the physical execution in terms of threads.
+
+Connecting remotely to a JVM for profiling is most commonly achieved with RMI, but unfortunately [RMI doesn't work
+well with Docker](https://forums.docker.com/t/exposing-mapped-jmx-ports-from-multiple-containers/5287/5) unless one hard
+codes the ports per task manager. While that's doable it breaks the `make flink-start` command, is tedious and it turns
+out doesn't work well when Flink is deployed on Kube either so all around RMI is less flexible.
+
+First JDK install Mission Control with,
+
+```
+brew install --cask --appdir="~/Applications" jdk-mission-control
+```
+
+1. Download [JMX Remote Reference Implementation](https://www.oracle.com/java/technologies/java-archive-downloads-java-plat-downloads.html#jmx_remote-1.0.1_03-mr-oth-JPR)
+
+### Via Promethus & Grafana
 Both Prometheus and Grafana are available via Docker. In addition the Prometheus exporter has been enabled in the 
 local cluster. In order to see this all in action,
 

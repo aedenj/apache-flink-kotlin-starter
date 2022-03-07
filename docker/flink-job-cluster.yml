@@ -18,6 +18,7 @@ services:
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
+      - ../conf/flink/jmxremote_optional.jar:/usr/lib/jmxremote_optional.jar
       - ../data/flink/checkpoints:/tmp/flink-checkpoints
       - ../data/flink/savepoints:/tmp/flink-savepoints
     networks:
@@ -30,7 +31,7 @@ services:
     command: "taskmanager.sh start-foreground --env cluster"
     ports:
       - "9250-9255:9249" # Prometheus Exporter
-      - "10000:10000"    # JMX Remote Port
+      - "10000:9999"    # JMX Remote Port
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - |
@@ -40,6 +41,7 @@ services:
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
+      - ../conf/flink/jmxremote_optional.jar:/usr/lib/jmxremote_optional.jar
       - ../data/flink/checkpoints:/tmp/flink-checkpoints
       - ../data/flink/savepoints:/tmp/flink-savepoints
     networks:
