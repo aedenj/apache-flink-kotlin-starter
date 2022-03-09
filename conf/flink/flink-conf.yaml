@@ -19,11 +19,6 @@ metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusRepor
 rest.flamegraph.enabled: true
 web.backpressure.refresh-interval: 10000
 
-env.java.opts: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.host='0.0.0.0'
-env.java.opts.jobmanager: -Xbootclasspath/a:/usr/lib/jmxremote_optional.jar -Dcom.sun.management.jmxremote.port=9999
-env.java.opts.taskmanager: -Xbootclasspath/a:/usr/lib/jmxremote_optional.jar -Dcom.sun.management.jmxremote.port=9999
-
-
-  taskmanager.numberOfTaskSlots: 1
-  parallelism.default: 1
-
+env.java.opts: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.jmx.remote.protocol=jmxmp -Dcom.sun.management.jmxremote.host='0.0.0.0'  -Djmx.remote.server.address.wildcard=true
+env.java.opts.jobmanager: -Xbootclasspath/a:/usr/lib/jmxremote_optional.jar -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.jmxmp.port=9999
+env.java.opts.taskmanager: -Xbootclasspath/a:/usr/lib/jmxremote_optional.jar -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.jmxmp.port=9999
