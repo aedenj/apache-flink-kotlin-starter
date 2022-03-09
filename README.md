@@ -2,6 +2,20 @@ Apache Flink Starter in Kotlin
 ========================
 A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flink-docs-master/) project using Kotlin.
 
+<!-- toc-begin -->
+* [Pre-requisites](#pre-requisites)
+* [Up & Running](#up--running)
+* [Running The Job](#running-the-job)
+    * [Starting Kafka](#starting-kafka)
+    * [Standalone Mode](#standalone-mode)
+    * [Using a Job Cluster](#using-a-job-cluster)
+* [Observing the Job in Action](#observing-the-job-in-action)
+* [Additional Containers](#additional-containers)
+* [Useful Commands](#useful-commands)
+* Additional Topics - Visit Wiki 
+  * [Profiling Flink](#profiling-flink-optional)
+<!-- toc-end -->
+  
 ## Pre-Requisites
 
 1. Docker on [Mac](https://download.docker.com/mac/stable/Docker.dmg)
@@ -27,14 +41,14 @@ There are a couple of ways of running this job depending on what you're trying t
 
 First, let's setup the kafka topics. Run `make create-default-topics`.
 
-### Locally
+### Standalone Mode 
 
 For quick feedback it's easiest to run the job locally,
 
 1. If you're using Intellij, use the usual methods.
 2. On the command line run `make run`
 
-### Using the Job Cluster
+### Using a Job Cluster
 
 1. Run `make flink-start`. 
 2. Verify the cluster is running by [navigating to the UI](http://localhost:8081/)
