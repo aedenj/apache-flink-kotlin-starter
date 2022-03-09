@@ -13,7 +13,7 @@ A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flin
 * [Additional Containers](#additional-containers)
 * [Useful Commands](#useful-commands)
 * Additional Topics - Visit Wiki 
-  * [Profiling Flink](#profiling-flink-optional)
+  * [Profiling Flink with JDK Mission Control](#https://github.com/aedenj/apache-flink-kotlin-starter/wiki/Additional-Topics#profiling-flink-with-jdk-mission-control)
 <!-- toc-end -->
   
 ## Pre-Requisites
