@@ -6,7 +6,6 @@ A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flin
 * [Pre-requisites](#pre-requisites)
 * [Up & Running](#up--running)
 * [Running The Job](#running-the-job)
-    * [Starting Kafka](#starting-kafka)
     * [Standalone Mode](#standalone-mode)
     * [Using a Job Cluster](#using-a-job-cluster)
 * [Observing the Job in Action](#observing-the-job-in-action)
