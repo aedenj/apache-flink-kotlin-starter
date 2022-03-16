@@ -98,6 +98,7 @@ dependencies {
     val assertjVersion = "3.20.2"
     val kafkaJunitVersion = "3.1.0"
     val typesafeVersion = "1.4.2"
+    val json2avro = "0.2.13"
 
     // Basics
     listOf(
@@ -127,7 +128,8 @@ dependencies {
 
     // Supplementary
     listOf(
-        "com.typesafe:config:$typesafeVersion"
+        "com.typesafe:config:$typesafeVersion",
+        "tech.allegro.schema.json2avro:converter:$json2avro"
     ).forEach { implementation(it)}
 
     // Testing
@@ -143,6 +145,7 @@ dependencies {
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
         "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
         "com.typesafe:config:$typesafeVersion",
-        "org.apache.flink:flink-avro:$flinkVersion"
+        "org.apache.flink:flink-avro:$flinkVersion",
+        "tech.allegro.schema.json2avro:converter:$json2avro"
     ).forEach { flinkShadowJar(it) }
 }
