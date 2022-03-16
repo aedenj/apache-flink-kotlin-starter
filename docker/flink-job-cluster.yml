@@ -14,7 +14,6 @@ services:
     command: "standalone-job --env cluster"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV: cluster
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
@@ -32,7 +31,6 @@ services:
       - "9250-9255:9249"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV: cluster
       FLINK_ENV_JAVA_OPTS_TM: "-Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err} -Dparallelism.default=${DEFAULT_PARALLELISM:?err}"
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
