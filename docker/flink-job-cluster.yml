@@ -26,12 +26,12 @@ services:
     image: flink:1.14.3-scala_2.11-java11
     depends_on:
       - jobmanager
-    command: "taskmanager.sh start-foreground"
+    command: "taskmanager.sh start-foreground -Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err}"
     ports:
       - "9250-9255:9249"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV_JAVA_OPTS_TM: "-Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err} -Dparallelism.default=${DEFAULT_PARALLELISM:?err}"
+      FLINK_ENV_JAVA_OPTS_TM: "-Dparallelism.default=${DEFAULT_PARALLELISM:?err}"
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
