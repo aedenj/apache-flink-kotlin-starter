@@ -11,7 +11,7 @@ services:
     ports:
       - "8081:8081"
       - "9249:9249"
-    command: "standalone-job --env cluster"
+    command: "standalone-job -Dparallelism.default=${DEFAULT_PARALLELISM:?err} --env cluster"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
     volumes:
@@ -31,7 +31,6 @@ services:
       - "9250-9255:9249"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      FLINK_ENV_JAVA_OPTS_TM: "-Dparallelism.default=${DEFAULT_PARALLELISM:?err}"
     volumes:
       - ../app/build/libs:/opt/flink/usrlib
       - ../conf/flink:/opt/flink/conf
