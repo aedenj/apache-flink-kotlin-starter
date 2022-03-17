@@ -10,7 +10,7 @@ services:
     hostname: jobmanager
     ports:
       - "8081:8081"
-      - "9249:9249"
+      - "9249:9249" # Prometheus Exporter
     command: "standalone-job -Dparallelism.default=${DEFAULT_PARALLELISM:?err} --env cluster"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
@@ -24,11 +24,9 @@ services:
 
   taskmanager:
     image: flink:1.14.3-scala_2.11-java11
-    depends_on:
-      - jobmanager
     command: "taskmanager.sh start-foreground -Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err}"
     ports:
-      - "9250-9255:9249"
+      - "9250-9255:9249" # Prometheus Exporter
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
     volumes:
@@ -36,6 +34,8 @@ services:
       - ../conf/flink:/opt/flink/conf
       - ../data/flink/checkpoints:/tmp/flink-checkpoints
       - ../data/flink/savepoints:/tmp/flink-savepoints
+    depends_on:
+      - jobmanager
     networks:
       - kafka-net
 
