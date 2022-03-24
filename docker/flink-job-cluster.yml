@@ -26,7 +26,7 @@ services:
     image: flink:1.14.3-scala_2.11-java11
     command: "taskmanager.sh start-foreground -Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err}"
     ports:
-      - "9250-9255:9249" # Prometheus Exporter
+      - "9249" # Prometheus Exporter
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
     volumes:

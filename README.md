@@ -94,12 +94,12 @@ service setup in prometheus.
 
 Here are a list links of useful links,
 
-| Description                                                         | Link                       |
-|---------------------------------------------------------------------|----------------------------|
-| Prometheus - Useful for exploring the raw measuresments of a metric | http://localhost:9090      |
-| Grafana - Home of all the dashboard                                 | http://localhost:9003      |
-| Job Manager Prometheus Exporter                                     | http://localhost:9249      |
-| Task Manager Prometheus Exporter                                    | http://localhost:9250-9255 |
+| Description                                                         | Link                                                |
+|---------------------------------------------------------------------|-----------------------------------------------------|
+| Prometheus - Useful for exploring the raw measuresments of a metric | http://localhost:9090                               |
+| Grafana - Home of all the dashboard                                 | http://localhost:9003                               |
+| Job Manager Prometheus Exporter                                     | http://localhost:9249                               |
+| Task Manager Prometheus Exporter                                    | Run `docker ps`. Identify containers mapped to 9249 |
 
 ## Additional Containers
 
