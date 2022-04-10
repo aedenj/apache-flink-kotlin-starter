@@ -13,6 +13,7 @@ A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flin
 * [Useful Commands](#useful-commands)
 * [Useful References](#useful-references)
 * Additional Topics - Visit Wiki 
+  * [Deploying with Flink Kubernetes Operator](https://github.com/aedenj/apache-flink-kotlin-starter/wiki/Deploying-with-the-Flink-Kubernetes-Operator)
   * [Profiling Flink with JDK Mission Control](https://github.com/aedenj/apache-flink-kotlin-starter/wiki/Profiling-Flink-with-JDK-Mission-Control)
 <!-- toc-end -->
   
@@ -70,11 +71,11 @@ In order to stop the job run `make flink-stop`
 After starting the job with one of the methods above, let's observe it reading and writing a message from one topic to another.
 
 1. Start the job using one of the methods above.
-2. In a new terminal start a Kafka producer by running `make start-producer topic='source'`
-3. You'll see the prompt `>`. Enter the message `1:{ message: "Hello World!" }`
+2. If Kafka Cat isn't installed, run `brew install kcat`
+3. To populate the source topic run `head -n 10 nyctaxi-dataset/yellowcab-trips-sample.json | kcat -b localhost -t source -T -P -l`
 4. Navigate to the [Kafka UI](http://localhost:8001/) and view the messages both the `source` and `destination` topics. 
 
-You should see the message `1:{ message: "Hello World!" }` in both topics.
+You should see the same messages in both topics.
 
 ## Monitoring Flink
 

@@ -8,6 +8,9 @@ default:
 	docker -v
 	java -version
 
+build-job:
+	./gradlew build
+
 run:
 	./gradlew run --args="--env local"
 

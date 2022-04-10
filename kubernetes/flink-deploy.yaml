@@ -1,0 +1,26 @@
+apiVersion: flink.apache.org/v1alpha1
+kind: FlinkDeployment
+metadata:
+  namespace: default
+  name: flink-kotlin-starter
+spec:
+  image: apache-flink-kotlin-starter:1.0
+  imagePullPolicy: IfNotPresent
+  flinkVersion: v1_14
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "2"
+  serviceAccount: flink
+  jobManager:
+    replicas: 1
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  job:
+    jarURI: local:///opt/flink/usrlib/apache-flink-kotlin-starter-app-1.0.jar
+    parallelism: 2
+    upgradeMode: stateless
+    args: ["--env", "production"]
