@@ -13,7 +13,7 @@ A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flin
 * [Useful Commands](#useful-commands)
 * [Useful References](#useful-references)
 * Additional Topics - Visit Wiki 
-  * [Deploying with Flink Kubernetes Operator](https://github.com/aedenj/apache-flink-kotlin-starter/wiki/Deploying-with-the-Flink-Kubernetes-Operator)
+  * [Deploying with Flink Kubernetes Operator](https://github.com/aedenj/apache-flink-kotlin-starter/wiki/Deploying-with-Flink-K8s-Operator)
   * [Profiling Flink with JDK Mission Control](https://github.com/aedenj/apache-flink-kotlin-starter/wiki/Profiling-Flink-with-JDK-Mission-Control)
 <!-- toc-end -->
   
