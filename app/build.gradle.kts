@@ -31,7 +31,7 @@ application {
 }
 
 tasks {
-    withType<JavaCompile> {
+    compileJava {
         options.encoding = "UTF-8"
     }
 
@@ -90,13 +90,12 @@ configurations {
 }
 
 dependencies {
-    val flinkVersion = "1.14.3"
-    val scalaVersion = "2.11"
+    val flinkVersion = "1.15.2"
     val log4jVersion = "2.17.0"
     val slf4jVersion = "1.7.32"
-    val junitVersion = "5.8.2"
+    val junitVersion = "5.9.0"
     val assertjVersion = "3.20.2"
-    val kafkaJunitVersion = "3.1.0"
+    val kafkaJunitVersion = "3.2.2"
     val typesafeVersion = "1.4.2"
 
     // Basics
@@ -107,13 +106,13 @@ dependencies {
 
     // Flink Core
     listOf(
-        "org.apache.flink:flink-streaming-java_$scalaVersion:$flinkVersion",
-        "org.apache.flink:flink-runtime-web_$scalaVersion:$flinkVersion"
+        "org.apache.flink:flink-streaming-java:$flinkVersion",
+        "org.apache.flink:flink-runtime-web:$flinkVersion"
     ).forEach { implementation(it) }
 
     // Connectors & Formats
     listOf(
-        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion"
+        "org.apache.flink:flink-connector-kafka:$flinkVersion"
     ).forEach { implementation(it) }
 
     // Logging
@@ -138,7 +137,7 @@ dependencies {
     //Add required dependencies to the Flink shadow jar
     listOf(
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
-        "org.apache.flink:flink-connector-kafka_$scalaVersion:$flinkVersion",
+        "org.apache.flink:flink-connector-kafka:$flinkVersion",
         "com.typesafe:config:$typesafeVersion"
     ).forEach { flinkShadowJar(it) }
 }
