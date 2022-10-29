@@ -32,14 +32,20 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zk1:2181
-      KAFKA_LISTENERS: LISTENER_DOCKER_INTERNAL://:19092,LISTENER_DOCKER_EXTERNAL://:9092
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://broker-1:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_LISTENERS: INSIDE://:19092,OUTSIDE://:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:19092,OUTSIDE://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=broker-1 -Dcom.sun.management.jmxremote.rmi.port=9010"
-      JMX_PORT: 9010
+      KAFKA_JMX_OPTS: > 
+        -Dcom.sun.management.jmxremote=true
+        -Djava.rmi.server.hostname=broker-1 
+        -Dcom.sun.management.jmxremote.port=9010
+        -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Dcom.sun.management.jmxremote.local.only=false
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
     volumes:
       - ../data/kafka/broker-1/data:/var/lib/kafka/data
     depends_on:
