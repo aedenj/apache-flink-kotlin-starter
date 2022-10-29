@@ -79,9 +79,9 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker-1:19092
-      KAFKA_CLUSTERS_0_METRICS_PORT: 9010
       KAFKA_CLUSTERS_0_ZOOKEEPER: zk1:2181
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8085
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9010
     networks:
       - kafka-net
     restart: unless-stopped
