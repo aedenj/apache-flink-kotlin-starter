@@ -37,7 +37,10 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_LOG4J_LOGGERS: >
+        kafka.controller=INFO,
+        kafka.producer.async.DefaultEventHandler=INFO,
+        state.change.logger=INFO
       KAFKA_JMX_OPTS: > 
         -Dcom.sun.management.jmxremote=true
         -Djava.rmi.server.hostname=broker-1 
