@@ -28,7 +28,7 @@ services:
     container_name: "broker-1"
     ports:
       - "9092:9092"
-      - "9010:9010"
+      - "9900:9900"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zk1:2181
@@ -44,8 +44,8 @@ services:
       KAFKA_JMX_OPTS: > 
         -Dcom.sun.management.jmxremote=true
         -Djava.rmi.server.hostname=broker-1
-        -Dcom.sun.management.jmxremote.port=9010
-        -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Dcom.sun.management.jmxremote.port=9900
+        -Dcom.sun.management.jmxremote.rmi.port=9900
         -Dcom.sun.management.jmxremote.local.only=false
         -Dcom.sun.management.jmxremote.authenticate=false
         -Dcom.sun.management.jmxremote.ssl=false
@@ -81,7 +81,7 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker-1:19092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zk1:2181
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8085
-      KAFKA_CLUSTERS_0_METRICS_PORT: 9010
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9900
     networks:
       - kafka-net
     restart: unless-stopped
