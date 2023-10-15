@@ -4,10 +4,10 @@ plugins {
     kotlin("jvm")
 
     // https://imperceptiblethoughts.com/shadow/introduction/
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 
     // https://plugins.gradle.org/plugin/com.adarshr.test-logger
-    id("com.adarshr.test-logger") version "3.0.0"
+    id("com.adarshr.test-logger") version "4.0.0"
 
     // https://docs.gradle.org/current/userguide/application_plugin.html
     application

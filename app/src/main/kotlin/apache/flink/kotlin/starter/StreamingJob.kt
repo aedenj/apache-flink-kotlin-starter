@@ -29,7 +29,7 @@ object StreamingJob {
                     .setValueSerializationSchema(SimpleStringSchema())
                     .build()
             )
-            .setDeliverGuarantee(DeliveryGuarantee.NONE)
+            .setDeliveryGuarantee(DeliveryGuarantee.NONE)
             .setKafkaProducerConfig(config.producer())
             .build()
 
