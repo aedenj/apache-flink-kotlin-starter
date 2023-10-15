@@ -90,7 +90,7 @@ configurations {
 }
 
 dependencies {
-    val flinkVersion = "1.15.2"
+    val flinkVersion = "1.17.1"
     val log4jVersion = "2.17.0"
     val slf4jVersion = "1.7.32"
     val junitVersion = "5.9.0"

@@ -6,7 +6,7 @@ metadata:
 spec:
   image: apache-flink-kotlin-starter:1.0
   imagePullPolicy: IfNotPresent
-  flinkVersion: v1_14
+  flinkVersion: v1_17
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "2"
   serviceAccount: flink

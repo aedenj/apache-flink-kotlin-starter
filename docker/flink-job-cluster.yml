@@ -6,7 +6,7 @@ networks:
 
 services:
   jobmanager:
-    image: flink:1.14.3-scala_2.11-java11
+    image: flink:1.17.1-java11
     hostname: jobmanager
     ports:
       - "8081:8081"
@@ -23,7 +23,7 @@ services:
       - kafka-net
 
   taskmanager:
-    image: flink:1.14.3-scala_2.11-java11
+    image: flink:1.17.1-java11
     command: "taskmanager.sh start-foreground -Dtaskmanager.numberOfTaskSlots=${NUM_TASK_SLOTS:?err}"
     ports:
       - "9249" # Prometheus Exporter
