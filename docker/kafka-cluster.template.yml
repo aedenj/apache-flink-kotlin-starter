@@ -1,0 +1,24 @@
+version: '3.8'
+
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+
+services:
+  ${SERVICE_NAME}:
+    hostname: "kafka-broker-${NODE_ID}"
+    container_name: "kafka-broker-${NODE_ID}"
+    ports:
+      - "9092:9092"
+      - "9900:9900"
+    environment:
+      KAFKA_NODE_ID: ${NODE_ID}
+      KAFKA_JMX_OPTS: >
+        -Dcom.sun.management.jmxremote=true
+        -Djava.rmi.server.hostname=kafka-broker-${NODE_ID}
+        -Dcom.sun.management.jmxremote.port=9900
+        -Dcom.sun.management.jmxremote.rmi.port=9900
+        -Dcom.sun.management.jmxremote.local.only=false
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
