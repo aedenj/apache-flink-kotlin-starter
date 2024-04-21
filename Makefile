@@ -12,7 +12,7 @@ build-job:
 	./gradlew build
 
 run:
-	./gradlew run --args="--env local"
+	./gradlew run
 
 # Start Continuous Testing
 test-t:
