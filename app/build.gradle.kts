@@ -35,6 +35,10 @@ tasks {
         options.encoding = "UTF-8"
     }
 
+    named<JavaExec>("run") {
+        args = listOf("--env", "standalone")
+    }
+
     test {
         useJUnitPlatform()
 
