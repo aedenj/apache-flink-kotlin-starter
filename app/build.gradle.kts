@@ -36,7 +36,7 @@ tasks {
     }
 
     named<JavaExec>("run") {
-        args = listOf("--env", "standalone")
+        args = listOf("--env", "local")
     }
 
     test {
